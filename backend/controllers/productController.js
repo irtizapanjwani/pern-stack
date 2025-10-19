@@ -21,6 +21,14 @@ export const getProduct = async (req,res) => {
         const product = await sql`
             SELECT * FROM products WHERE id=${id}
         `;
+
+        if (product.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Product not found",
+            });
+        }
+
         res.status(201).json({success: true, data:product[0]});
     } catch (error) {
         console.log("Error in getProduct Function",error);
@@ -41,8 +49,8 @@ export const createProduct = async (req,res) =>{
             VALUES (${name},${price},${image})
             RETURNING *
         `;
-        Console.log("new product added: ",newProduct);
-        res.send(201).json({success: true, data: newProduct[0]});
+        console.log("new product added: ",newProduct);
+        res.status(201).json({success: true, data: newProduct[0]});
     } catch (error) {
         console.log("Error in createProduct",error);
         res.status(500).json({ success: false, message: "Internal Server Error"});
@@ -57,7 +65,7 @@ export const updateProduct = async(req,res) => {
         const updateProduct = await sql`
             UPDATE products
             SET name=${name}, price=${price}, image=${image}
-            WHERE id={id} 
+            WHERE id=${id} 
             RETURNING *
         `
 
@@ -83,7 +91,7 @@ export const deleteProduct = async(req,res) => {
             RETURNING *
         `
 
-        if (deleteProduct.length === 0) {
+        if (deletedProduct.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Product not found",

@@ -17,7 +17,7 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
 
-app.use('/api/products',productRoutes)
+app.use('/api/products', productRoutes)
 
 async function initDB() {
     try {
@@ -32,12 +32,12 @@ async function initDB() {
         `;
         console.log("Database Initialized Successfully")
     } catch (error) {
-        console.log("Error initDB",error)
+        console.log("Error initDB", error)
     }
 }
 
-initDB().then(()=> {
-    app.listen(PORT, ()=>{
+initDB().then(() => {
+    app.listen(PORT, () => {
         console.log(`Server is running on PORT ${PORT}`);
     });
 })
